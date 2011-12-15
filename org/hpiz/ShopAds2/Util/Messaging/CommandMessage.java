@@ -92,4 +92,22 @@ public class CommandMessage extends ShopAdsMessage {
             player.sendMessage(config.getLabelColor() + "[" + s.getShopName() + "] " + config.getMessageColor() + s.getAd());
         }
     }
+    
+     public void listShops(Player player) {
+        if (shops == null || shops.length < 1) {
+            player.sendMessage(prefix + "There are no shops available to teleport to.");
+            return;
+        }
+        player.sendMessage(prefix + "These are all the current shops.");
+        for (Shop s : shops) {
+            if (s.advertisesIn(player.getWorld().getName())){
+                if (s.getWorld()== player.getWorld()){
+                    player.sendMessage(config.getLabelColor() + s.getShopName());
+                }else {
+                    player.sendMessage(config.getLabelColor() + s.getShopName() + "*");
+                }
+            }
+            
+        }
+    }
 }

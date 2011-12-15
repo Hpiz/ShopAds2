@@ -126,6 +126,11 @@ public class ShopAdsCommand extends ShopAds2 implements CommandExecutor {
             }
             message.commandUsage.fullCommandMenu(player);
         }
+        if(commandLabel.equalsIgnoreCase("shops")){
+            if (args.length==0){
+                message.command.listShops(player);
+            }
+        }
         return false;
     }
 
