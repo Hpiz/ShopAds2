@@ -4,6 +4,7 @@
  */
 package org.hpiz.ShopAds2;
 
+import org.hpiz.ShopAds2.Command.ShopAdsCommand;
 import org.hpiz.ShopAds2.Threads.AnnounceThread;
 import org.hpiz.ShopAds2.Util.ShopAdsPermissions;
 import org.hpiz.ShopAds2.Util.Messaging.ShopAdsMessage;

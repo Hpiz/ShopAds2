@@ -40,4 +40,8 @@ public class ConsoleMessage extends ShopAdsMessage {
     public void hookedPermissions(String name) {
         log.info("[ShopAds2] Hooked into " + name);
     }
+
+    public void disablePlugin() {
+        log.info("[ShopAds2] Plugin disabled.");
+    }
 }

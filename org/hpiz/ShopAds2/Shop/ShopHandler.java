@@ -54,15 +54,15 @@ public class ShopHandler extends ShopAds2 {
 
     }
 
-    public int getShopByName(String name) {
+    public Shop getShopByName(String name) {
         if (shops != null && shops.length > 0) {
             for (int i = 0; i < shops.length; i++) {
                 if (shops[i].getShopName().equalsIgnoreCase(name)) {
-                    return i;
+                    return shops[i];
                 }
             }
         }
-        return -1;
+        return null;
 
     }
 
@@ -72,6 +72,15 @@ public class ShopHandler extends ShopAds2 {
                 if (shop == test) {
                     return true;
                 }
+            }
+        }
+        return false;
+    }
+    
+    public boolean shopExists(String shop){
+        for(Shop test :shops){
+            if(test.getShopName().equalsIgnoreCase(shop)){
+                return true;
             }
         }
         return false;

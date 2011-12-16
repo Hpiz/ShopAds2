@@ -54,5 +54,9 @@ public class ErrorMessage extends ShopAdsMessage {
     public void noPermission(Player player, String command) {
         player.sendMessage(prefix + "You do not have permission to use the " + command + " command.");
     }
+
+    public void noShopFound( Player player, String shop) {
+        player.sendMessage(prefix + "No shop by that name found. (" + shop + ")");
+    }
     
 }

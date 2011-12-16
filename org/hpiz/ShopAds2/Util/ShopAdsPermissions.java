@@ -11,7 +11,6 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicesManager;
 import org.hpiz.ShopAds2.ShopAds2;
 
-
 /**
  *
  * @author Chris
@@ -20,35 +19,25 @@ public class ShopAdsPermissions extends ShopAds2 {
 
     public static Permission permission = null;
 
-   
-
     /*  protected Boolean setupPermissions()
     {
-        RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
+    RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
     if (permissionProvider != null) {
     permission = permissionProvider.getProvider();
     }
     return (permission != null);
     }
      */
-    public boolean hasUserPermission (Player player){
-        if(this.hasCreatorPermission(player)){
-            return true;
-        }
-        if(permission.has(player, "ShopAds.User")){
-            return true;
-        
-        }
-        return false;
-    }
-    public boolean hasCreatorPermission (Player player){
-        if(permission.has(player, "ShopAds.Creator")){
+
+    public boolean hasCreatorPermission(Player player) {
+        if (permission.has(player, "ShopAds.Creator")) {
             return true;
         }
         return false;
     }
+
     public boolean hasCreatePermission(Player player) {
-        if (this.hasCreatorPermission(player)){
+        if (this.hasCreatorPermission(player)) {
             return true;
         }
         if (this.hasAdminPermission(player)) {
@@ -61,32 +50,32 @@ public class ShopAdsPermissions extends ShopAds2 {
     }
 
     public boolean hasSetPermission(Player player) {
-        if (this.hasCreatorPermission(player)){
+        if (this.hasCreatorPermission(player)) {
             return true;
         }
         if (this.hasAdminPermission(player)) {
             return true;
         }
-        if (permission.has(player, "ShopAds.Creator.set")) {
+        if (permission.has(player, "ShopAds.Creator.set.self")) {
             return true;
         }
         return false;
     }
 
     public boolean hasStatsPermission(Player player) {
-        if (this.hasCreatorPermission(player)){
+        if (this.hasCreatorPermission(player)) {
             return true;
         }
         if (this.hasAdminPermission(player)) {
             return true;
         }
-        if (permission.has(player, "ShopAds.Creator.stats")) {
+        if (permission.has(player, "ShopAds.Creator.stats.self")) {
             return true;
         }
         return false;
     }
 
-     public boolean hasStatsOtherPermission(Player player) {
+    public boolean hasStatsOtherPermission(Player player) {
         if (this.hasAdminPermission(player)) {
             return true;
         }
@@ -95,7 +84,7 @@ public class ShopAdsPermissions extends ShopAds2 {
         }
         return false;
     }
-    
+
     public boolean hasAdminDeletePermission(Player player) {
         if (this.hasAdminPermission(player)) {
             return true;
@@ -107,7 +96,7 @@ public class ShopAdsPermissions extends ShopAds2 {
     }
 
     public boolean hasDeleteOwnPermission(Player player) {
-        if (this.hasCreatorPermission(player)){
+        if (this.hasCreatorPermission(player)) {
             return true;
         }
         if (this.hasAdminPermission(player)) {
@@ -121,6 +110,19 @@ public class ShopAdsPermissions extends ShopAds2 {
 
     public boolean hasAdminPermission(Player player) {
         if (permission.has(player, "ShopAds.Admin") || permission.has(player, "ShopAds.*") || player.isOp()) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean hasSetOtherPermission(Player player) {
+        if (this.hasCreatorPermission(player)) {
+            return true;
+        }
+        if (this.hasAdminPermission(player)) {
+            return true;
+        }
+        if (permission.has(player, "ShopAds.Creator.set.other")) {
             return true;
         }
         return false;

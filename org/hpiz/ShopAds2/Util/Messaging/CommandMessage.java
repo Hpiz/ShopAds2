@@ -111,4 +111,11 @@ public class CommandMessage extends ShopAdsMessage {
             }
         }
     }
+
+    public void disable(Player player) {
+        player.sendMessage(prefix + "Plugin disabled.");
+    }
+    public void reload(Player player) {
+        player.sendMessage(prefix + "Config, shops, and players reloaded.");
+    }
 }
