@@ -221,14 +221,20 @@ public class ShopAdsIO extends ShopAds2 {
                 end = true;
             }
             if (end == false) {
-                shopHandler.addShop(shop);
+                try{
+                    shopHandler.addShop(shop);
+                }catch(NullPointerException e){
+                    message.console.playersFileReset();
+                    plugin.onDisable();
+                  
+                }
             }
         } while (!end);
         return true;
     }
 
     public boolean saveShops() {
-        if (shops == null || shops.length < 1) {
+        if (shopHandler.shopsEmpty()) {
             return true;
         }
         message.console.debug("savingShops");
@@ -247,8 +253,8 @@ public class ShopAdsIO extends ShopAds2 {
             Logger.getLogger(ShopAdsIO.class.getName()).log(Level.SEVERE, null, ex);
         }
         //message.consoleMessage.debug("Length of SAPlayers5 : " + playerHandler.getPlayers().length);
-        message.console.debug(shops[0].getShopName());
-        for (Shop p : shops) {
+        message.console.debug(shopHandler.getShop(0).getShopName());
+        for (Shop p : shopHandler.getShops()) {
             try {
                 message.console.debug("Saving Shop : " + p.getShopName());
                 out.writeObject(p);
