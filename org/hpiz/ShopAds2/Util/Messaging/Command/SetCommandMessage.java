@@ -18,11 +18,11 @@ public class SetCommandMessage extends ShopAdsMessage{
     
 
     public void shopSettings(Player player, String shop) {
-        if(shopHandler.getShopByName(shop).getShopOwner().equalsIgnoreCase(player.getName())){
-            
+        if(shopHandler.getShop(shop).getShopOwner().equalsIgnoreCase(player.getName())){
+            displayShopSettings(player,shopHandler.getShop(shop));
         }else{
             if (permissions.hasSetOtherPermission(player)){
-                this.displayShopSettings(player, shopHandler.getShopByName(shop));
+                this.displayShopSettings(player, shopHandler.getShop(shop));
             }
         }
     }
