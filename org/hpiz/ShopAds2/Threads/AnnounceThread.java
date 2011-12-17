@@ -22,15 +22,14 @@ public class AnnounceThread extends Thread {
 
 
 
-        if (plugin.shops != null) {
-            if (plugin.shops.length > 0) {
+        if (plugin.shopHandler.shopsEmpty()) {
                 if (plugin.playersOnline()) {
                     if (this.plugin.config.getRandomOrder()) {
                         plugin.message.console.debug("Random is on");
                       
                         if (announcementOrder == null) {
                             plugin.message.console.debug("generating");
-                            announcementOrder = new int[plugin.shops.length];
+                            announcementOrder = new int[plugin.shopHandler.getSize()];
                             for (int i = 0; i < announcementOrder.length; i++) {
                                 announcementOrder[i] = i;
                             }
@@ -42,7 +41,7 @@ public class AnnounceThread extends Thread {
                                 this.announcementOrder[randomPosition] = temp;
                             }
                         }
-                        plugin.message.advertise.advertise(plugin.shops[randomIndex]);
+                        plugin.message.advertise.advertise(plugin.shopHandler.getShop(randomIndex));
 
                         randomIndex++;
                         if (randomIndex >= announcementOrder.length) {
@@ -50,14 +49,14 @@ public class AnnounceThread extends Thread {
                             randomIndex = 0;
                         }
                     } else {
-                        if (this.lastAnnouncement >= plugin.shops.length) {
+                        if (this.lastAnnouncement >= plugin.shopHandler.getSize()) {
 
                             this.lastAnnouncement = 0;
                         }
-                        if (this.lastAnnouncement < plugin.shops.length) {
+                        if (this.lastAnnouncement < plugin.shopHandler.getSize()) {
                            // plugin.message.consoleMessage.debug("Last: " + lastAnnouncement);
                            // plugin.message.consoleMessage.debug("Shops: " + plugin.shops.length);
-                            plugin.message.advertise.advertise(plugin.shops[this.lastAnnouncement]);
+                            plugin.message.advertise.advertise(plugin.shopHandler.getShop(this.lastAnnouncement));
                             this.lastAnnouncement++;
                         }
                     }
@@ -65,4 +64,3 @@ public class AnnounceThread extends Thread {
             }
         }
     }
-}
