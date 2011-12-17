@@ -29,9 +29,10 @@ public class Shop extends ShopAds2 implements Serializable {
         this.advertisement = ad;
         this.runsForever = forever;
         this.worldsToAdvertiseIn = advertiseTo;
-        this.isExpired = advertising;
+        this.isExpired = false;
         this.moneyEarned = 0.00;
         this.timesTeleportedTo = 0;
+        this.isAdvertising = advertising;
     }
 
     public World getWorld() {
