@@ -4,18 +4,18 @@
  */
 package org.hpiz.ShopAds2.Util;
 
+import org.bukkit.Server;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 import org.hpiz.ShopAds2.ShopAds2;
 
 /**
  *
  * @author Chris
  */
-public class ServerInterface extends ShopAds2{
-   
+public class ServerInterface extends ShopAds2 {
+    public final Server server = getServer();
     public World getWorld (String string){
-        for (World w : getWorlds()) {
+        for (World w : server.getWorlds()) {
             if (w.getName().equalsIgnoreCase(string)) {
                 return w;
             }
@@ -23,7 +23,7 @@ public class ServerInterface extends ShopAds2{
         return null;
     }
    public boolean worldExists(String string) {
-        for (World w : getWorlds()) {
+        for (World w : server.getWorlds()) {
             if (w.getName().equalsIgnoreCase(string)) {
                 return true;
             }
@@ -31,6 +31,8 @@ public class ServerInterface extends ShopAds2{
         return false;
     }
 
+   
+   
 
     
 }
