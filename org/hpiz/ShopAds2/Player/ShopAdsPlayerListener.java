@@ -6,6 +6,7 @@ package org.hpiz.ShopAds2.Player;
 
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 import org.hpiz.ShopAds2.ShopAds2;
 
@@ -23,11 +24,16 @@ public class ShopAdsPlayerListener extends PlayerListener {
 
     @Override
     public void onPlayerJoin(PlayerJoinEvent event) {
+        plugin.onlinePlayers.addPlayer(event.getPlayer());
         if(!plugin.playerHandler.playerExists(event.getPlayer().getName())){
         plugin.playerHandler.addPlayer(new ShopAdsPlayer (event.getPlayer().getName(), true, 0));
     
         }
 
+    }
+    @Override
+    public void onPlayerQuit (PlayerQuitEvent event){
+        plugin.onlinePlayers.removePlayer(event.getPlayer());
     }
    
     
