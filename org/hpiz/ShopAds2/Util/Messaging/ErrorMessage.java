@@ -27,7 +27,7 @@ public class ErrorMessage extends ShopAdsMessage {
      
     public void noShopEntered(Player player) {
         player.sendMessage(prefix + "You must enter a shop name.");
-        commandUsage.setCommand(player);
+        
     }
 
     public void noAdEntered(Player player) {
