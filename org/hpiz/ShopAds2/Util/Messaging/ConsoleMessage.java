@@ -11,14 +11,14 @@ package org.hpiz.ShopAds2.Util.Messaging;
 public class ConsoleMessage extends ShopAdsMessage {
 
     public void numberOfShopsLoaded() {
-        if (shops == null || shops.length < 1) {
+        if (shopHandler.shopsEmpty()) {
             log.info("[ShopAds2] No shops were found.");
             return;
         }
-        if (shops.length == 1) {
+        if (shopHandler.getSize() == 1) {
             log.info("[ShopAds2] 1 shop was loaded.");
         } else {
-            log.info("[ShopAds2] " + shops.length + " shops were loaded.");
+            log.info("[ShopAds2] " + shopHandler.getSize() + " shops were loaded.");
         }
         return;
     }
@@ -43,5 +43,17 @@ public class ConsoleMessage extends ShopAdsMessage {
 
     public void disablePlugin() {
         log.info("[ShopAds2] Plugin disabled.");
+    }
+
+    public void playersFileReset() {
+        log.info("[ShopAds2] PLAYERS FILE DOESN'T MATCH UP WITH SHOPS, SUGGEST DELETING SHOPS.DAT FILE.");
+    }
+
+    public void savingShops() {
+        log.info("[ShopAds2] Saving shops.");
+    }
+
+    public void savingPlayers() {
+        log.info("[ShopAds2] Saving players.");
     }
 }
