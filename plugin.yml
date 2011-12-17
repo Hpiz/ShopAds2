@@ -1,6 +1,6 @@
 name: ShopAds2
 main: org.hpiz.ShopAds2.ShopAds2
-version: 0.35
+version: 0.45
 author: Hpiz
 depend:
   - Vault
