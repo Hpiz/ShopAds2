@@ -4,6 +4,7 @@
  */
 package org.hpiz.ShopAds2.Util.Messaging;
 
+import org.hpiz.ShopAds2.Util.Messaging.Command.CommandMessage;
 import org.hpiz.ShopAds2.Util.Messaging.Command.CommandUsageMessage;
 import org.bukkit.entity.Player;
 import org.hpiz.ShopAds2.ShopAds2;
