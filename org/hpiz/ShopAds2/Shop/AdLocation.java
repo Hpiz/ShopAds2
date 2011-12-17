@@ -5,11 +5,9 @@
 package org.hpiz.ShopAds2.Shop;
 
 import java.io.Serializable;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
 import org.hpiz.ShopAds2.ShopAds2;
 
@@ -90,8 +88,11 @@ public class AdLocation extends ShopAds2 implements Serializable {
     }
 
     public World getWorld() {
-        return serverInterface.getWorld(world);
-                }
+        message.console.debug ("World in shop: " + world);
+        
+        World realWorld = worlds.getWorlds().get(worlds.getWorld(world));
+        return realWorld;
+    }
     
    
     
