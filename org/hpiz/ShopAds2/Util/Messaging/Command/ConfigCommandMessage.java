@@ -9,10 +9,7 @@ package org.hpiz.ShopAds2.Util.Messaging.Command;
  * @author Chris
  */
 public class ConfigCommandMessage {
-    
-    public void configItemChanged(){
-        
+
+    public void configItemChanged() {
     }
-   
-    
 }

@@ -11,7 +11,8 @@ import org.hpiz.ShopAds2.ShopAds2;
  *
  * @author Chris
  */
-public class ShopAdsPlayer extends ShopAds2 implements Serializable{
+public class ShopAdsPlayer extends ShopAds2 implements Serializable {
+
     private String name;
     private boolean wantsAds;
     private int ownedShops;
@@ -45,17 +46,20 @@ public class ShopAdsPlayer extends ShopAds2 implements Serializable{
     public void setWantsAds(boolean wantsAds) {
         this.wantsAds = wantsAds;
     }
-    public void addOwnedShop (){
+
+    public void addOwnedShop() {
         ownedShops++;
     }
-    public void subtractOwnedShop(){
-        if (ownedShops==1){
-            ownedShops=0;
+
+    public void subtractOwnedShop() {
+        if (ownedShops == 1) {
+            ownedShops = 0;
+        } else {
+            if (ownedShops == 0) {
+                return;
+            } else {
+                ownedShops--;
+            }
         }
-        else if (ownedShops==0){
-            return;
-        }
-        else
-        ownedShops--;
     }
 }

@@ -56,4 +56,10 @@ public class ConsoleMessage extends ShopAdsMessage {
     public void savingPlayers() {
         log.info("[ShopAds2] Saving players.");
     }
+
+    public void announceDebug(String string) {
+        if (config.getAnnounceDebug()) {
+            log.info("[ShopAds2 ANNOUNCE DEBUG] " + string);
+        }
+    }
 }

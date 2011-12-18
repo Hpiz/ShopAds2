@@ -5,6 +5,7 @@
 package org.hpiz.ShopAds2.Util.Messaging.Command;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import org.bukkit.World;
@@ -27,7 +28,7 @@ public class CommandMessage extends ShopAdsMessage {
         Calendar calNow = Calendar.getInstance();
         Date dateNow = calNow.getTime();
         if (shop.getTimeToEnd().compareTo(dateNow) > 0) {
-            player.sendMessage(prefix + shop.getShopName() + " has " + df.format((dateNow.getTime() - shop.getTimeToEnd().getTime()) / 3600000) + " hours remaining.");
+            player.sendMessage(prefix + shop.getShopName() + " has " + df.format((shop.getTimeToEnd().getTime() - dateNow.getTime())/360000) + " hours remaining.");
         }
 
     }
@@ -40,11 +41,19 @@ public class CommandMessage extends ShopAdsMessage {
                 return;
             }
             if (playerHandler.getPlayer(player.getName()).getOwnedShops() == 1) {
-                player.sendMessage(prefix + "You currently are advertising one shop.");
+                player.sendMessage(prefix + "You currently are advertising one shop:");
+                ArrayList<Shop> playersShops = shopHandler.getPlayersShops(player);
+                for (Shop s:playersShops){
+                    shopStats(player,s);
+                }
                 return;
             }
             if (playerHandler.getPlayer(player.getName()).getOwnedShops() > 1) {
-                player.sendMessage(prefix + "You currently are advertising " + playerHandler.getPlayer(player.getName()).getOwnedShops() + " shops.");
+                player.sendMessage(prefix + "You currently are advertising " + playerHandler.getPlayer(player.getName()).getOwnedShops() + " shops:");
+                ArrayList<Shop> playersShops = shopHandler.getPlayersShops(player);
+                for (Shop s:playersShops){
+                    shopStats(player,s);
+                }
                 return;
             }
         }

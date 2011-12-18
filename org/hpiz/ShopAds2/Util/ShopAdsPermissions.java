@@ -28,7 +28,6 @@ public class ShopAdsPermissions extends ShopAds2 {
     return (permission != null);
     }
      */
-
     public boolean hasCreatorPermission(Player player) {
         if (permission.has(player, "ShopAds.Creator")) {
             return true;

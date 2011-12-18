@@ -30,7 +30,7 @@ public class TeleportedPlayer extends ShopAds2 {
 
     public boolean isExpired() {
         Calendar calNow = Calendar.getInstance();
-        Date dateNow = calNow.getTime();   
+        Date dateNow = calNow.getTime();
         return dateNow.before(this.tpExpire);
     }
 

@@ -12,9 +12,9 @@ import org.hpiz.ShopAds2.Shop.Shop;
  *
  * @author Chris
  */
-public class Mathematical extends ShopAds2{
-    
-        public boolean isNumber(String string) {
+public class Mathematical extends ShopAds2 {
+
+    public boolean isNumber(String string) {
         for (char c : string.toCharArray()) {
             if (!Character.isDigit(c) && !Character.isSpaceChar(c) && !Character.isWhitespace(c) && c != '.') {
                 return false;
@@ -26,5 +26,4 @@ public class Mathematical extends ShopAds2{
     public double playerDistanceFromShop(Player p, Shop shop) {
         return shop.getLocation().distance(p.getLocation());
     }
-  
 }

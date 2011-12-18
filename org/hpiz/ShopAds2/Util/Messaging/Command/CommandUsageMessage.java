@@ -11,9 +11,8 @@ import org.hpiz.ShopAds2.Util.Messaging.ShopAdsMessage;
  *
  * @author Chris
  */
-public class CommandUsageMessage extends ShopAdsMessage{
-    
-    
+public class CommandUsageMessage extends ShopAdsMessage {
+
     // Commands
     public void fullCommandMenu(Player player) {
         message.console.debug("Full COmmand List");
@@ -132,85 +131,81 @@ public class CommandUsageMessage extends ShopAdsMessage{
         player.sendMessage(config.getMessageColor() + "/ad c [shopname] [number of hrs] [message]");
     }
 
-    
     public void configCommand(Player player) {
         message.console.debug("configCommand Message");
         player.sendMessage(prefix + "config options:");
-        player.sendMessage("/ad config [key] [value]");
-        player.sendMessage("announceInterval: " + config.getAnnounceInterval());
-        player.sendMessage("sendToAll: " + config.getSendToAll());
-        player.sendMessage("enableTp: " + config.getEnableTp());
-        player.sendMessage("randomOrder: " + config.getRandomOrder());
-        player.sendMessage("tpCost: " + config.getTpCost());
-        player.sendMessage("transWorldAddition: " + config.getTransWorldAddition());
-        player.sendMessage("adsOverWorlds: " + config.getAdsOverWorlds());
-        player.sendMessage("tpTimeout: " + config.getTpTimeout());
-        player.sendMessage("maxAdRunTime: " + config.getMaxAdRunTime());
-        player.sendMessage("shopsPerPlayer: " + config.getShopsPerPlayer());
-        player.sendMessage("adCost: " + config.getAdCost());
-        player.sendMessage("tpCostDestination: " + config.getTpCostDestination());
-        player.sendMessage("announceRadius: " + config.getAnnounceRadius());
+        player.sendMessage(config.getMessageColor() + "/ad config [key] [value]");
+        player.sendMessage(config.getMessageColor() + "announceInterval: " + config.getAnnounceInterval());
+        player.sendMessage(config.getMessageColor() + "sendToAll: " + config.getSendToAll());
+        player.sendMessage(config.getMessageColor() + "enableTp: " + config.getEnableTp());
+        player.sendMessage(config.getMessageColor() + "randomOrder: " + config.getRandomOrder());
+        player.sendMessage(config.getMessageColor() + "tpCost: " + config.getTpCost());
+        player.sendMessage(config.getMessageColor() + "transWorldAddition: " + config.getTransWorldAddition());
+        player.sendMessage(config.getMessageColor() + "adsOverWorlds: " + config.getAdsOverWorlds());
+        player.sendMessage(config.getMessageColor() + "tpTimeout: " + config.getTpTimeout());
+        player.sendMessage(config.getMessageColor() + "maxAdRunTime: " + config.getMaxAdRunTime());
+        player.sendMessage(config.getMessageColor() + "shopsPerPlayer: " + config.getShopsPerPlayer());
+        player.sendMessage(config.getMessageColor() + "adCost: " + config.getAdCost());
+        player.sendMessage(config.getMessageColor() + "tpCostDestination: " + config.getTpCostDestination());
+        player.sendMessage(config.getMessageColor() + "announceRadius: " + config.getAnnounceRadius());
     }
-    
-    
+
     public void announceIntervalUsage(Player player) {
         incorrectUsage(player);
-        player.sendMessage("/ad config announceInterval [number in seconds]");
+        player.sendMessage(config.getMessageColor() + "/ad config announceInterval [number in seconds]");
     }
 
     public void sendToAllUsage(Player player) {
         incorrectUsage(player);
-        player.sendMessage("/ad config sendToAll [true/false]");
+        player.sendMessage(config.getMessageColor() + "/ad config sendToAll [true/false]");
     }
 
     public void enableTpUsage(Player player) {
         incorrectUsage(player);
-        player.sendMessage("/ad config enableTp [true/false]");
+        player.sendMessage(config.getMessageColor() + "/ad config enableTp [true/false]");
     }
 
     public void randomOrderUsage(Player player) {
         incorrectUsage(player);
-        player.sendMessage("/ad config randomOrder [true/false]");
+        player.sendMessage(config.getMessageColor() + "/ad config randomOrder [true/false]");
     }
 
     public void tpCostUsage(Player player) {
         incorrectUsage(player);
-        player.sendMessage("/ad config tpCost [number]");
+        player.sendMessage(config.getMessageColor() + "/ad config tpCost [number]");
     }
 
     public void transWorldAdditionAllUsage(Player player) {
         incorrectUsage(player);
-        player.sendMessage("/ad config transWorldAddition [number]");
+        player.sendMessage(config.getMessageColor() + "/ad config transWorldAddition [number]");
     }
 
     public void maxAdRunTimeUsage(Player player) {
         incorrectUsage(player);
-        player.sendMessage("/ad config maxAdRunTime [number in hours]");
+        player.sendMessage(config.getMessageColor() + "/ad config maxAdRunTime [number in hours]");
     }
 
     public void shopsPerPlayerUsage(Player player) {
         incorrectUsage(player);
-        player.sendMessage("/ad config shopsPerPlayer [number]");
+        player.sendMessage(config.getMessageColor() + "/ad config shopsPerPlayer [number]");
     }
 
     public void adCostUsage(Player player) {
         incorrectUsage(player);
-        player.sendMessage("/ad config adCost [number]");
+        player.sendMessage(config.getMessageColor() + "/ad config adCost [number]");
     }
 
     public void tpCostDestinationUsage(Player player) {
         incorrectUsage(player);
-        player.sendMessage("/ad config tpCostDestination [shop/server]");
+        player.sendMessage(config.getMessageColor() + "/ad config tpCostDestination [shop/server]");
     }
 
     public void announceRadiusUsage(Player player) {
         incorrectUsage(player);
-        player.sendMessage("/ad config announceRadius [number of blocks]");
+        player.sendMessage(config.getMessageColor() + "/ad config announceRadius [number of blocks]");
     }
-    
+
     public void incorrectUsage(Player player) {
         player.sendMessage(prefix + "Command Usage:");
     }
-
-    
 }

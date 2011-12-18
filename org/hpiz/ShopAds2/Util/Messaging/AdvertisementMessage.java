@@ -12,10 +12,10 @@ import org.hpiz.ShopAds2.Shop.Shop;
  *
  * @author Chris
  */
-public class AdvertisementMessage extends ShopAdsMessage{
-    
+public class AdvertisementMessage extends ShopAdsMessage {
+
     public void advertise(Shop shop) {
-       
+        message.console.debug("Choosing advertisement method");
         if (config.getSendToAll()) {
             if (!config.getAdsOverWorlds()) {
                 advertiseNotOverWorldsToAll(shop);
@@ -35,7 +35,7 @@ public class AdvertisementMessage extends ShopAdsMessage{
 
     public void advertiseNotOverWorldsToAll(Shop shop) {
         message.console.debug("advertiseNotOverWorldsToAll shop message");
-        for (Player p : onlinePlayers.getOnlinePlayers()) {
+        for (Player p : server.getOnlinePlayers()) {
             for (World shopWorld : shop.getWorldsToAdvertiseIn()) {
                 if (p.getWorld() == shopWorld) {
                     if (config.getAnnounceRadius() > 0) {
@@ -53,7 +53,7 @@ public class AdvertisementMessage extends ShopAdsMessage{
 
     public void advertiseNotOverWorlds(Shop shop) {
         message.console.debug("advertiseNotOverWorldToAll shop message");
-        for (Player p : onlinePlayers.getOnlinePlayers()) {
+        for (Player p : server.getOnlinePlayers()) {
             if (playerHandler.playerExists(p.getName())) {
                 if (playerHandler.getPlayer(p.getName()).getWantsAds()) {
                     return;
@@ -76,7 +76,7 @@ public class AdvertisementMessage extends ShopAdsMessage{
 
     public void advertiseToAll(Shop shop) {
         message.console.debug("advertiseToAll shop message");
-        for (Player p : onlinePlayers.getOnlinePlayers()) {
+        for (Player p : server.getOnlinePlayers()) {
             for (World shopWorld : shop.getWorldsToAdvertiseIn()) {
                 if (p.getWorld() == shopWorld) {
                     if (config.getAnnounceRadius() > 0) {
@@ -94,7 +94,7 @@ public class AdvertisementMessage extends ShopAdsMessage{
 
     public void advertiseShop(Shop shop) {
         message.console.debug("advertise shop message");
-        for (Player p : onlinePlayers.getOnlinePlayers()) {
+        for (Player p : server.getOnlinePlayers()) {
             if (playerHandler.playerExists(p.getName())) {
                 if (playerHandler.getPlayer(p.getName()).getWantsAds()) {
                     return;
@@ -115,5 +115,4 @@ public class AdvertisementMessage extends ShopAdsMessage{
             }
         }
     }
-    
 }

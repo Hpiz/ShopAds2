@@ -4,10 +4,7 @@
  */
 package org.hpiz.ShopAds2.Player;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import org.bukkit.entity.Player;
+import java.util.ArrayList;
 import org.hpiz.ShopAds2.Shop.Shop;
 import org.hpiz.ShopAds2.ShopAds2;
 
@@ -17,110 +14,105 @@ import org.hpiz.ShopAds2.ShopAds2;
  */
 public class PlayerHandler extends ShopAds2 {
 
+    public static ArrayList<ShopAdsPlayer> players = new ArrayList<ShopAdsPlayer>();
+    public ArrayList<TeleportedPlayer> teleportedPlayers;
 
-    public static ShopAdsPlayer[] shopAdsPlayers;
-    public TeleportedPlayer[] teleportedPlayers;
-    
-    public ShopAdsPlayer[] getPlayers() {
-        
-        return shopAdsPlayers;
+    public void initializeTeleportedPlayers() {
+        teleportedPlayers = new ArrayList<TeleportedPlayer>();
     }
-    
-    public void setPlayers(ShopAdsPlayer[] players) {
-        this.shopAdsPlayers = players;
+
+    public ArrayList<ShopAdsPlayer> getPlayers() {
+
+        return players;
+    }
+
+    public void setPlayers(ArrayList<ShopAdsPlayer> newPlayers) {
+        this.players = newPlayers;
     }
 
     public ShopAdsPlayer getPlayer(String name) {
-        for (ShopAdsPlayer output : shopAdsPlayers) {
-            if (output.getName().equalsIgnoreCase(name)) {
-                return output;
+        for (ShopAdsPlayer test : players) {
+            if (test.getName().equalsIgnoreCase(name)) {
+                return test;
             }
+
         }
-        message.console.debug("Input name was not found");
         return null;
     }
 
     public boolean playerExists(String name) {
-        if (shopAdsPlayers == null) {
+        try {
+            ShopAdsPlayer p = this.getPlayer(name);
+            if(players.contains(p)){
+            return true;
+            }else{
+                return false;
+            }
+        } catch (NullPointerException e) {
             return false;
         }
-        for (ShopAdsPlayer player : shopAdsPlayers) {
-            if (name.equalsIgnoreCase(player.getName())) {
+    }
+
+    public boolean addPlayer(ShopAdsPlayer player) {
+        if (!players.isEmpty()) {
+            message.console.debug("players is not empty when adding player");
+            if (players.contains(player)) {
+                message.console.debug(player.getName() + " was not added to players.");
+                return false;
+            } else {
+                players.add(player);
+                message.console.debug(player.getName() + " was added to players.");
                 return true;
+            }
+        } else {
+            message.console.debug("players is empty when adding player");
+            players.add(player);
+            message.console.debug(player.getName() + " was added to players.");
+            return true;
+        }
+    }
+
+    public boolean removeTeleportedPlayer(TeleportedPlayer p) {
+        try {
+            teleportedPlayers.remove(p);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean returnTeleportedPlayers() {
+        if (teleportedPlayers == null){
+            return true;
+        }
+        if (teleportedPlayers.isEmpty()){
+            return true;
+        }
+        for (TeleportedPlayer p : teleportedPlayers) {
+            if (p.isExpired()) {
+                if (removeTeleportedPlayer(p)) {
+                    p.getPlayer().teleport(p.getOldLoc());
+                    message.tpTimeout(p.getPlayer());
+                    return true;
+                }
             }
         }
         return false;
     }
-    
-    public boolean addPlayer(ShopAdsPlayer player) {
-        
-        if (shopAdsPlayers == null) {
-            
-            shopAdsPlayers = new ShopAdsPlayer[1];
-            shopAdsPlayers[0] = player;
-            message.console.debug(shopAdsPlayers[0].getName());
 
+    public boolean isEmpty() {
+        if (players.isEmpty()) {
             return true;
+
         }
-        
-        ShopAdsPlayer[] holder = new ShopAdsPlayer[shopAdsPlayers.length];
-        holder = shopAdsPlayers;
-        
-        
-        message.console.debug("setting new player to " + (holder.length + 1));
-        shopAdsPlayers = new ShopAdsPlayer[holder.length + 1];
-        message.console.debug("players length: " + shopAdsPlayers.length);
-        for (int x = 0; x < shopAdsPlayers.length - 1; x++) {
-            message.console.debug(String.valueOf(x));
-            shopAdsPlayers[x] = holder[x];
-        }
-        shopAdsPlayers[holder.length] = player;
-        return true;
-    }
-    
-    public boolean removeTeleportedPlayer(TeleportedPlayer p) {
-        if (this.teleportedPlayers == null || this.teleportedPlayers.length < 1) {
-            return true;
-        }
-        int index = -1;
-        for (int i = 0; i < teleportedPlayers.length; i++) {
-            if (this.teleportedPlayers[i].equals(p)) {
-                index = i;
-            }
-        }
-        if (index == -1) {
-            return false;
-        }
-        TeleportedPlayer[] temp = new TeleportedPlayer[teleportedPlayers.length];
-        for (int i = 0; i < index; i++) {
-            temp[i] = teleportedPlayers[i];
-        }
-        for (int i = index + 1; i < teleportedPlayers.length; i++) {
-            temp[i - 1] = teleportedPlayers[i];
-        }
-        teleportedPlayers = new TeleportedPlayer[temp.length];
-        teleportedPlayers = temp;
-        return true;
+        return false;
     }
 
-    public boolean returnTeleportedPlayers() {
-        if (this.teleportedPlayers == null || this.teleportedPlayers.length < 1) {
-            return true;
-        }
-        
-        for (TeleportedPlayer p : this.teleportedPlayers) {
-            if (p.isExpired()) {
-                this.removeTeleportedPlayer(p);
-            }
-        }
-        return true;
-    }
-    
     public void updateOwnedShopsFromFile() {
-        
-        for (ShopAdsPlayer p : this.getPlayers()) {            
+
+        for (ShopAdsPlayer p : this.getPlayers()) {
             int count = 0;
-            if (shopHandler.shopsEmpty()){
+            if (shopHandler.shopsEmpty()) {
                 p.setOwnedShops(count);
                 continue;
             }
@@ -131,5 +123,16 @@ public class PlayerHandler extends ShopAds2 {
             }
             p.setOwnedShops(count);
         }
+    }
+
+    public boolean isNull() {
+        if(players==null){
+            return true;
+        }
+        return false;
+    }
+
+    public ShopAdsPlayer getPlayer(int i) {
+        return players.get(i);
     }
 }

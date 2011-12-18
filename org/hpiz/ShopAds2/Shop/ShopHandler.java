@@ -7,18 +7,53 @@ package org.hpiz.ShopAds2.Shop;
 import java.util.ArrayList;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.hpiz.ShopAds2.Player.ShopAdsPlayer;
 import org.hpiz.ShopAds2.ShopAds2;
-import org.hpiz.ShopAds2.Util.ServerInterface;
 
 /**
  *
  * @author Chris
  */
 public class ShopHandler extends ShopAds2 {
+
     private ArrayList<Shop> shops = new ArrayList<Shop>();
+
+    public ArrayList<Shop> getPlayersShops(Player player) {
+        ArrayList<Shop> playersShops = new ArrayList<Shop>();
+        for (Shop s : shops) {
+            if (s.getShopOwner().equalsIgnoreCase(player.getName())) {
+                playersShops.add(s);
+            }
+        }
+        return playersShops;
+    }
+
+    public ArrayList<Shop> getPlayersShops(String player) {
+        ArrayList<Shop> playersShops = new ArrayList<Shop>();
+        for (Shop s : shops) {
+            if (s.getShopOwner().equalsIgnoreCase(player)) {
+                playersShops.add(s);
+            }
+        }
+        return playersShops;
+    }
+
     public void addShop(Shop shop) {
+        if (this.shopExists(shop)) {
+            return;
+        }
         shops.add(shop);
-        playerHandler.getPlayer(shop.getShopOwner()).addOwnedShop();
+        message.console.debug(String.valueOf(playerHandler.playerExists("Debug")));
+        
+        if (!playerHandler.isEmpty()) {
+            if (playerHandler.playerExists(shop.getShopOwner())) {
+                playerHandler.getPlayer(shop.getShopOwner()).addOwnedShop();
+            }
+        }
+    }
+
+    public void setShop(int index, Shop shop) {
+        shops.set(index, shop);
     }
 
     public void removeShop(Shop shop) {
@@ -40,27 +75,27 @@ public class ShopHandler extends ShopAds2 {
         return null;
 
     }
-    
-    public boolean shopsEmpty(){
+
+    public boolean shopsEmpty() {
         return shops.isEmpty();
     }
 
     public boolean shopExists(Shop shop) {
-        if(shops.contains(shop)){
+        if (shops.contains(shop)) {
             return true;
         }
         return false;
     }
-    
-    public boolean shopExists(String shop){
-        Shop[]temp = new Shop[shops.size()];
+
+    public boolean shopExists(String shop) {
+        Shop[] temp = new Shop[shops.size()];
         shops.toArray(temp);
         if (temp != null && temp.length > 0) {
-        for(Shop test :temp){
-            if(test.getShopName().equalsIgnoreCase(shop)){
-                return true;
+            for (Shop test : temp) {
+                if (test.getShopName().equalsIgnoreCase(shop)) {
+                    return true;
+                }
             }
-        }
         }
         return false;
     }
@@ -70,14 +105,15 @@ public class ShopHandler extends ShopAds2 {
     }
 
     public void addWorldToShop(Shop shop, String string) {
-        if(!serverInterface.worldExists(string)){
+        try {
+            shop.addWorldToAdvertiseIn(server.getWorld(string));
+        } catch (Exception e) {
             return;
         }
-        shop.addWorldToAdvertiseIn(serverInterface.getWorld(string));
     }
 
     public boolean ownsShop(Shop shop, Player player) {
-        if (player.getName()==shop.getShopOwner()){
+        if (player.getName() == shop.getShopOwner()) {
             return true;
         }
         return false;
@@ -94,5 +130,4 @@ public class ShopHandler extends ShopAds2 {
     public Shop getShop(int index) {
         return shops.get(index);
     }
-    
 }

@@ -118,14 +118,19 @@ public class ShopAdsIO extends ShopAds2 {
                 } catch (Exception e) {
                     message.console.checkConfigOption("tpCostDestination");
                 }
-                 try {
+                try {
                     config.setRandomOrder(Boolean.parseBoolean(pr.getProperty("randomOrder")));
                 } catch (Exception e) {
                     message.console.checkConfigOption("randomOrder");
                 }
-                
+
                 try {
                     config.setDebug(Boolean.parseBoolean(pr.getProperty("debug")));
+                } catch (Exception e) {
+                    config.setDebug(false);
+                }
+                try {
+                    config.setAnnounceDebug(Boolean.parseBoolean(pr.getProperty("announceDebug")));
                 } catch (Exception e) {
                     config.setDebug(false);
                 }
@@ -221,12 +226,12 @@ public class ShopAdsIO extends ShopAds2 {
                 end = true;
             }
             if (end == false) {
-                try{
+                try {
                     shopHandler.addShop(shop);
-                }catch(NullPointerException e){
+                } catch (NullPointerException e) {
                     message.console.playersFileReset();
                     plugin.onDisable();
-                  
+
                 }
             }
         } while (!end);
@@ -269,7 +274,7 @@ public class ShopAdsIO extends ShopAds2 {
             out.close();
         } catch (IOException ex) {
             Logger.getLogger(ShopAdsIO.class.getName()).log(Level.SEVERE, null, ex);
-            message.console.debug("There was an error closing the player writer");
+            message.console.debug("There was an error closing the shop writer");
         }
 
 
@@ -278,6 +283,10 @@ public class ShopAdsIO extends ShopAds2 {
 
     public int getObjectCount(File file) {
         message.console.debug("getObjectCount on " + file.getName());
+        if (file.equals(null)){
+            message.console.debug(file.getName() + " is empty.");
+            return 0;
+        }
         int count = 0;
         FileInputStream fis;
         ObjectInputStream in = null;
@@ -285,8 +294,10 @@ public class ShopAdsIO extends ShopAds2 {
             fis = new FileInputStream(file);
             in = new ObjectInputStream(fis);
         } catch (EOFException ex) {
+            message.console.debug("Object Count : 0");
             return 0;
         } catch (IOException ex) {
+            message.console.debug("Object Count : 0");
 
             return 0;
         }
@@ -296,6 +307,7 @@ public class ShopAdsIO extends ShopAds2 {
                 object = in.readObject();
                 count++;
             } catch (NullPointerException ex) {
+                
                 break;
             } catch (IOException ex) {
                 break;
@@ -338,8 +350,8 @@ public class ShopAdsIO extends ShopAds2 {
                 out.println("adsOverWorlds=true");
                 out.println("enableTp=true");
                 out.println("tpTimeout=60");
-               out.println("labelColor=GOLD");
-               out.println("messageColor=GRAY");
+                out.println("labelColor=GOLD");
+                out.println("messageColor=GRAY");
                 out.close();
                 log.info("[ShopAds2] No config found, created default config");
             } catch (IOException e) {
@@ -351,10 +363,10 @@ public class ShopAdsIO extends ShopAds2 {
     }
 
     public boolean savePlayers() {
-        if (playerHandler.getPlayers() == null || playerHandler.getPlayers().length < 1) {
+        if (playerHandler.isEmpty()) {
             return true;
         }
-        message.console.debug("savingPlayers");
+        message.console.debug("saving Players");
 
         FileOutputStream fos = null;
         ObjectOutputStream out = null;
@@ -370,7 +382,7 @@ public class ShopAdsIO extends ShopAds2 {
             Logger.getLogger(ShopAdsIO.class.getName()).log(Level.SEVERE, null, ex);
         }
         //message.consoleMessage.debug("Length of SAPlayers5 : " + playerHandler.getPlayers().length);
-        message.console.debug(playerHandler.shopAdsPlayers[0].getName());
+        message.console.debug(playerHandler.getPlayer(0).getName());
         for (ShopAdsPlayer p : playerHandler.getPlayers()) {
             try {
                 message.console.debug("Saving Player : " + p.getName());

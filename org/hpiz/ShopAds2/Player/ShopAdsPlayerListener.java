@@ -24,18 +24,16 @@ public class ShopAdsPlayerListener extends PlayerListener {
 
     @Override
     public void onPlayerJoin(PlayerJoinEvent event) {
-        plugin.onlinePlayers.addPlayer(event.getPlayer());
-        if(!plugin.playerHandler.playerExists(event.getPlayer().getName())){
-        plugin.playerHandler.addPlayer(new ShopAdsPlayer (event.getPlayer().getName(), true, 0));
-    
+      plugin.message.console.debug("Is player in shopadsplayers: " + plugin.playerHandler.playerExists(event.getPlayer().getName()));
+        if (!plugin.playerHandler.playerExists(event.getPlayer().getName())) {
+            plugin.playerHandler.addPlayer(new ShopAdsPlayer(event.getPlayer().getName(), true, 0));
+
         }
 
     }
+
     @Override
-    public void onPlayerQuit (PlayerQuitEvent event){
-        plugin.onlinePlayers.removePlayer(event.getPlayer());
+    public void onPlayerQuit(PlayerQuitEvent event) {
+       
     }
-   
-    
-    
 }

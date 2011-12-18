@@ -26,9 +26,9 @@ public class AdLocation extends ShopAds2 implements Serializable {
 
     public AdLocation(Location loc) {
         //compiled code
-        x=loc.getX();
-        y=loc.getY();
-        z=loc.getZ();
+        x = loc.getX();
+        y = loc.getY();
+        z = loc.getZ();
         pitch = loc.getPitch();
         yaw = loc.getYaw();
         world = loc.getWorld().getName();
@@ -41,8 +41,6 @@ public class AdLocation extends ShopAds2 implements Serializable {
     public void setPitch(float pitch) {
         this.pitch = pitch;
     }
-
-
 
     public double getY() {
         return y;
@@ -68,34 +66,28 @@ public class AdLocation extends ShopAds2 implements Serializable {
         this.z = z;
     }
 
-
     public void setX(double x) {
         //compiled code
         this.x = x;
     }
 
     public Vector getDirection() {
-        return new Location (serverInterface.getWorld(world),x,y,z,pitch,yaw).getDirection();
+        return new Location(server.getWorld(world), x, y, z, yaw, pitch).getDirection();
     }
-    
-    public Location getLocation(){
-        return new Location (serverInterface.getWorld(world),x,y,z,pitch,yaw);
+
+    public Location getLocation() {
+        return new Location(server.getWorld(world), x, y, z, yaw, pitch);
     }
 
     public double distance(Location o) {
         //compiled code
-        return new Location (serverInterface.getWorld(world),x,y,z,pitch,yaw).distance(o);
+        return new Location(server.getWorld(world), x, y, z, yaw, pitch).distance(o);
     }
 
     public World getWorld() {
-        message.console.debug ("World in shop: " + world);
-        
-        World realWorld = worlds.getWorlds().get(worlds.getWorld(world));
+        message.console.debug("World in shop: " + world);
+
+        World realWorld = server.getWorld(world);
         return realWorld;
     }
-    
-   
-    
-
-
 }

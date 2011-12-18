@@ -1,6 +1,8 @@
 package org.hpiz.ShopAds2.Shop;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -15,7 +17,7 @@ public class Shop extends ShopAds2 implements Serializable {
     private Date timeToEnd;
     private boolean runsForever;
     private String advertisement;
-    private String[] worldsToAdvertiseIn;
+    private ArrayList<String> worldsToAdvertiseIn;
     private boolean isAdvertising;
     private boolean isExpired;
     private double moneyEarned;
@@ -28,7 +30,7 @@ public class Shop extends ShopAds2 implements Serializable {
         this.timeToEnd = time;
         this.advertisement = ad;
         this.runsForever = forever;
-        this.worldsToAdvertiseIn = advertiseTo;
+        this.worldsToAdvertiseIn = new ArrayList<String>(Arrays.asList(advertiseTo));
         this.isExpired = false;
         this.moneyEarned = 0.00;
         this.timesTeleportedTo = 0;
@@ -38,18 +40,20 @@ public class Shop extends ShopAds2 implements Serializable {
     public World getWorld() {
         return location.getWorld();
     }
-    public boolean advertisesIn (String world){
-        for (String s : this.worldsToAdvertiseIn){
-            if(s.equalsIgnoreCase(world)){
+
+    public boolean advertisesIn(String world) {
+        for (String s : this.worldsToAdvertiseIn) {
+            if (s.equalsIgnoreCase(world)) {
                 return true;
             }
         }
         return false;
     }
+
     public World[] getWorldsToAdvertiseIn() {
-        World[]worlds = new World [this.worldsToAdvertiseIn.length];
-        for (int i=0; i<worlds.length;i++){
-            worlds[i]= serverInterface.getWorld(worldsToAdvertiseIn[i]);
+        World[] worlds = new World[this.worldsToAdvertiseIn.size()];
+        for (int i = 0; i < worlds.length; i++) {
+            worlds[i] = server.getWorld(worldsToAdvertiseIn.get(i));
         }
         return worlds;
     }
@@ -107,9 +111,10 @@ public class Shop extends ShopAds2 implements Serializable {
     }
 
     public void setWorldsToAdvertiseIn(World[] w) {
-        this.worldsToAdvertiseIn = new String[w.length];
-        for (int i = 0 ; i < w.length; i++){
-            this.worldsToAdvertiseIn[i] = w[i].getName();
+        String[] worlds = new String[w.length];
+        for (int i = 0; i < w.length; i++) {
+            worlds[i] = w[i].getName();
+            this.worldsToAdvertiseIn = new ArrayList<String>(Arrays.asList(worlds));
         }
     }
 
@@ -138,20 +143,17 @@ public class Shop extends ShopAds2 implements Serializable {
     }
 
     public void addWorldToAdvertiseIn(World world) {
-        
-        for (String w : this.worldsToAdvertiseIn){
-            if(world.getName() == w){
-                return;
-            }   
+        if (this.worldsToAdvertiseIn.contains(world.getName())) {
+            return;
         }
-        String[] newWorld = new String[this.worldsToAdvertiseIn.length+1];
-        for (int i=0; i<this.worldsToAdvertiseIn.length;i++){
-            newWorld[i] = this.worldsToAdvertiseIn[i];
-        }
-        newWorld[newWorld.length-1] = world.getName();
-        this.worldsToAdvertiseIn = new String [newWorld.length];
-        this.worldsToAdvertiseIn = newWorld;
+        this.worldsToAdvertiseIn.add(world.getName());
     }
-    
-    
+
+    public String[] getWorldsToAdvertiseInAsString() {
+        String[] worlds = new String[this.worldsToAdvertiseIn.size()];
+        for (int i = 0; i < worlds.length; i++) {
+            worlds[i] = this.worldsToAdvertiseIn.get(i);
+        }
+        return worlds;
+    }
 }

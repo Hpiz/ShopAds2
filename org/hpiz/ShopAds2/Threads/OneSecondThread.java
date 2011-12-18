@@ -6,7 +6,6 @@ package org.hpiz.ShopAds2.Threads;
 
 import org.hpiz.ShopAds2.ShopAds2;
 
-
 /**
  *
  * @author Chris
@@ -22,7 +21,7 @@ public class OneSecondThread extends Thread {
 
     @Override
     public void run() {
-       // teleportHandler.tpReturn();
+        // teleportHandler.tpReturn();
         plugin.playerHandler.returnTeleportedPlayers();
         return;
     }

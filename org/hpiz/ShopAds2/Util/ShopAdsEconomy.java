@@ -17,8 +17,6 @@ public class ShopAdsEconomy extends ShopAds2 {
 
     public static Economy economy = null;
 
-
-
     public boolean playerPayPlayer(Player sender, Player reciever, double amount) {
         if (economy.has(sender.getName(), amount)) {
             economy.withdrawPlayer(sender.getName(), amount);
@@ -45,16 +43,17 @@ public class ShopAdsEconomy extends ShopAds2 {
     public boolean hasEnough(Player player, double amount) {
         message.console.debug("checking if " + player.getName() + " has " + amount);
         message.console.debug(economy.getName());
-        if(economy.has(player.getName(), amount)){
+        if (economy.has(player.getName(), amount)) {
             return true;
         }
         return false;
     }
-    public Economy getEconomy(){
+
+    public Economy getEconomy() {
         return economy;
     }
-    
-    public String format (double d){
+
+    public String format(double d) {
         return economy.format(d);
     }
 }

@@ -4,6 +4,8 @@
  */
 package org.hpiz.ShopAds2;
 
+import java.util.Calendar;
+import java.util.Date;
 import org.hpiz.ShopAds2.Command.ShopAdsCommand;
 import org.hpiz.ShopAds2.Threads.AnnounceThread;
 import org.hpiz.ShopAds2.Util.ShopAdsPermissions;
@@ -17,6 +19,8 @@ import org.hpiz.ShopAds2.Shop.ShopHandler;
 import java.util.logging.Logger;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
+import org.bukkit.Location;
+import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
@@ -25,10 +29,10 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.hpiz.ShopAds2.Player.OnlinePlayers;
+
+import org.hpiz.ShopAds2.Shop.Shop;
 import org.hpiz.ShopAds2.Threads.OneSecondThread;
-import org.hpiz.ShopAds2.Util.ServerInterface;
-import org.hpiz.ShopAds2.Util.ShopAdsWorlds;
+
 
 /**
  *
@@ -43,16 +47,15 @@ public class ShopAds2 extends JavaPlugin {
     public static final Logger log = Logger.getLogger("Minecraft");
     public static final ShopAdsConfig config = new ShopAdsConfig();
     public static final ShopAdsMessage message = new ShopAdsMessage();
-    public static OnlinePlayers onlinePlayers;
     public static String prefix;
     public static final ShopAdsEconomy economy = new ShopAdsEconomy();
     public static final ShopAdsPermissions permissions = new ShopAdsPermissions();
     public static final ShopAdsIO iO = new ShopAdsIO();
     public static final PlayerHandler playerHandler = new PlayerHandler();
     public static final ShopHandler shopHandler = new ShopHandler();
-    public static ServerInterface serverInterface = new ServerInterface();
+
     public static BukkitScheduler scheduler;
-    public static ShopAdsWorlds worlds;
+    public static Server server;
     //Class initialization
     public static final ShopAdsCommand command = new ShopAdsCommand();
 
@@ -64,24 +67,24 @@ public class ShopAds2 extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        server = this.getServer();
         PluginDescriptionFile pdfFile = getDescription();
         log.info("[" + pdfFile.getName() + "]" + " Version " + pdfFile.getVersion() + " loading.");
-        this.getServer().getPluginManager().registerEvent(Type.PLAYER_JOIN, playerListener, Priority.Low, this);
-        this.getServer().getPluginManager().registerEvent(Type.PLAYER_QUIT, playerListener, Priority.Low, this);
+        server.getPluginManager().registerEvent(Type.PLAYER_JOIN, playerListener, Priority.Low, this);
+        server.getPluginManager().registerEvent(Type.PLAYER_QUIT, playerListener, Priority.Low, this);
         getCommand("ad").setExecutor(command);
         getCommand("ads").setExecutor(command);
         getCommand("shops").setExecutor(command);
-        scheduler = getServer().getScheduler();
-        if (!setupPermissions())
-            {
+        scheduler = server.getScheduler();
+        if (!setupPermissions()) {
             this.onDisable();
-            }
-        if (!setupEconomy())
-            {
+        }
+        if (!setupEconomy()) {
             this.onDisable();
-            }
+        }
         reload();
-        onlinePlayers = new OnlinePlayers();
+
+
 
     }
 
@@ -93,59 +96,110 @@ public class ShopAds2 extends JavaPlugin {
         message.console.savingShops();
         iO.saveShops();
         log.info("[ShopAds2] Disabling plugin");
-        BukkitScheduler scheduler = getServer().getScheduler();
         scheduler.cancelTasks(this);
-        getServer().getPluginManager().disablePlugin(this);
-
+        server.getPluginManager().disablePlugin(this);
     }
 
     public void reload() {
-        worlds = new ShopAdsWorlds(getServer().getWorlds());
+
         iO.loadConfig();
         iO.loadPlayers();
         iO.loadShops();
         message.console.numberOfShopsLoaded();
-        if (playerHandler.getPlayers() == null || playerHandler.getPlayers().length < 0)
-            {
+        if (playerHandler.isEmpty()) {
             // Do nothing
-            } else
-            {
+        } else {
             playerHandler.updateOwnedShopsFromFile();
-            }
+        }
         prefix = (config.getLabelColor() + "[ShopAds] " + config.getMessageColor());
-        Long interval = (Long.parseLong(String.valueOf(config.getAnnounceInterval())) * 25L);
-        Long oneSecond = (1L * 25L);
+        Long interval = (Long.parseLong(String.valueOf(config.getAnnounceInterval())) * 20L);
+        Long oneSecond = (1L * 20L);
         scheduler.scheduleAsyncRepeatingTask(this, thread2, oneSecond.longValue(), oneSecond.longValue());
         scheduler.scheduleAsyncRepeatingTask(this, this.thread, interval.longValue(), interval.longValue());
-    }
 
-    public boolean playersOnline() {
-        if (onlinePlayers.getOnlinePlayers().isEmpty())
-            {
+
+
+        /*       
+        if (config.getDebug()) {
+        Calendar calNow = Calendar.getInstance();
+        Date dateNow = calNow.getTime();
+        Date timeToEnd = calNow.getTime();
+        timeToEnd.setTime(dateNow.getTime() + Long.parseLong("15") * 3600000);
+        Location test = new Location(server.getWorld("world"), 4, 4, 4, 0.0F, 0.0F);
+        String[] worldTo = new String[1];
+        worldTo[0] = "world";
+        Shop testShop;
+        testShop = new Shop("DebugShop", test, "Debug", timeToEnd, false, server.getWorld("world"), "This shop was auto-generated", worldTo, true);
+        if (!shopHandler.shopExists(testShop.getShopName())){
+        
+        
+        shopHandler.addShop(testShop);
+        
+        }
+      
+    }
+         
+         */
+}
+
+public boolean playersOnline() {
+        if (server.getOnlinePlayers()==null || server.getOnlinePlayers().length<1) {
             return false;
-            }
+        }
         return true;
     }
 
-    public boolean setupPermissions() {
-        RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
-        if (permissionProvider != null)
-            {
+    public 
+
+
+
+boolean setupPermissions() {
+        RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class  
+
+    );
+        
+    
+    if (permissionProvider 
+
+    
+        
+
+    
+        != null) {
             permissions.permission = permissionProvider.getProvider();
-            message.console.hookedPermissions(permissionProvider.getProvider().getName());
-            return true;
-            }
-        return false;
+        message.console.hookedPermissions(permissionProvider.getProvider().getName());
+        return true;
+    }
+    
+
+
+return false;
     }
 
-    public boolean setupEconomy() {
-        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-        if (economyProvider != null)
-            {
+    public 
+
+
+
+boolean setupEconomy() {
+        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class  
+
+    );
+        
+    
+    if (economyProvider 
+
+    
+        
+
+    
+        != null) {
             economy.economy = economyProvider.getProvider();
-            message.console.hookedEconomy(economyProvider.getProvider().getName());
-            return true;
-            }
-        return false;
+        message.console.hookedEconomy(economyProvider.getProvider().getName());
+        return true;
+    }
+    
+
+
+return false;
     }
 }
